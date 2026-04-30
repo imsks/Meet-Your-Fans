@@ -1,21 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+"use client";
+
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SiteShell } from "@/components/site/SiteShell";
 import { supabase } from "@/integrations/supabase/client";
 import { socialLabel } from "@/lib/social";
 import { ArrowRight, Users, ExternalLink } from "lucide-react";
-
-export const Route = createFileRoute("/creators/")({
-  head: () => ({
-    meta: [
-      { title: "Creators on MeetYourFans" },
-      { name: "description", content: "Browse creators using MeetYourFans to organise real-life meetups with their audience." },
-      { property: "og:title", content: "Creators on MeetYourFans" },
-      { property: "og:description", content: "Find your favourite creators and get on their fan map." },
-    ],
-  }),
-  component: CreatorsList,
-});
 
 type Creator = {
   id: string;
@@ -26,7 +16,7 @@ type Creator = {
   audience_count: number;
 };
 
-function CreatorsList() {
+export function CreatorsList() {
   const [creators, setCreators] = useState<Creator[] | null>(null);
 
   useEffect(() => {
@@ -48,9 +38,12 @@ function CreatorsList() {
             </p>
           </div>
           <Link
-            to="/creators/register"
+            href="/creators/register"
             className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-primary-foreground"
-            style={{ background: "var(--gradient-hero)", boxShadow: "var(--shadow-soft)" }}
+            style={{
+              background: "var(--gradient-hero)",
+              boxShadow: "var(--shadow-soft)",
+            }}
           >
             Become a creator <ArrowRight className="h-4 w-4" />
           </Link>
@@ -60,14 +53,17 @@ function CreatorsList() {
           {creators === null ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-40 animate-pulse rounded-2xl border border-border bg-muted/40" />
+                <div
+                  key={i}
+                  className="h-40 animate-pulse rounded-2xl border border-border bg-muted/40"
+                />
               ))}
             </div>
           ) : creators.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center">
               <p className="text-muted-foreground">No creators yet. Be the first!</p>
               <Link
-                to="/creators/register"
+                href="/creators/register"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
               >
                 Register as a creator <ArrowRight className="h-4 w-4" />
@@ -78,8 +74,7 @@ function CreatorsList() {
               {creators.map((c) => (
                 <Link
                   key={c.id}
-                  to="/creators/$slug"
-                  params={{ slug: c.slug }}
+                  href={`/creators/${c.slug}`}
                   className="group relative flex flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-1"
                   style={{ boxShadow: "0 1px 2px oklch(0 0 0 / 0.04)" }}
                 >

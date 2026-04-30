@@ -1,24 +1,14 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+"use client";
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { SiteShell } from "@/components/site/SiteShell";
+import { Field } from "@/components/site/FormField";
 import { supabase } from "@/integrations/supabase/client";
 import { detectCity, geocodeCity } from "@/lib/geo";
 import { MapPin, Loader2 } from "lucide-react";
-
-export const Route = createFileRoute("/register")({
-  head: () => ({
-    meta: [
-      { title: "Join as a Fan — MeetYourFans" },
-      { name: "description", content: "Sign up to get on the map and let your favourite creators know you're here." },
-      { property: "og:title", content: "Join as a Fan — MeetYourFans" },
-      { property: "og:description", content: "Get on the map. Meet your favourite creators in real life." },
-    ],
-  }),
-  component: RegisterPage,
-});
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(80),
@@ -27,14 +17,14 @@ const schema = z.object({
   city: z.string().trim().min(1, "City is required").max(80),
 });
 
-function RegisterPage() {
-  const navigate = useNavigate();
+export function RegisterForm() {
+  const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", contact_number: "", city: "" });
-  const [coords, setCoords] = useState<{ lat: number | null; lng: number | null; country: string | null }>({
-    lat: null,
-    lng: null,
-    country: null,
-  });
+  const [coords, setCoords] = useState<{
+    lat: number | null;
+    lng: number | null;
+    country: string | null;
+  }>({ lat: null, lng: null, country: null });
   const [detecting, setDetecting] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -81,19 +71,18 @@ function RegisterPage() {
       return;
     }
     toast.success("You're on the map! 🎉");
-    setTimeout(() => navigate({ to: "/creators" }), 800);
+    setTimeout(() => router.push("/creators"), 800);
   };
 
   return (
     <SiteShell>
-      <Toaster />
       <section className="mx-auto max-w-xl px-4 py-16 sm:px-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Join as a fan
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Get on the map. We'll show creators where you are.
+            Get on the map. We&apos;ll show creators where you are.
           </p>
         </div>
 
@@ -134,7 +123,13 @@ function RegisterPage() {
           </Field>
           <Field
             label="City"
-            hint={detecting ? "Detecting…" : coords.country ? `Auto-detected · ${coords.country}` : "Auto-detected"}
+            hint={
+              detecting
+                ? "Detecting…"
+                : coords.country
+                  ? `Auto-detected · ${coords.country}`
+                  : "Auto-detected"
+            }
           >
             <div className="relative">
               <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -153,54 +148,21 @@ function RegisterPage() {
             type="submit"
             disabled={submitting}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
-            style={{ background: "var(--gradient-hero)", boxShadow: "var(--shadow-soft)" }}
+            style={{
+              background: "var(--gradient-hero)",
+              boxShadow: "var(--shadow-soft)",
+            }}
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
             Get me on the map
           </button>
 
           <p className="text-center text-xs text-muted-foreground">
-            Your email and number stay private. Only your name & city show on creator maps.
+            Your email and number stay private. Only your name &amp; city show on creator
+            maps.
           </p>
         </form>
       </section>
-
-      <FieldStyles />
     </SiteShell>
-  );
-}
-
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-sm font-medium text-foreground">{label}</span>
-        {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
-      </div>
-      {children}
-    </label>
-  );
-}
-
-export function FieldStyles() {
-  return (
-    <style>{`
-      .input {
-        width: 100%;
-        border-radius: 0.625rem;
-        border: 1px solid var(--border);
-        background: var(--background);
-        padding: 0.625rem 0.875rem;
-        font-size: 0.9rem;
-        color: var(--foreground);
-        outline: none;
-        transition: border-color .15s, box-shadow .15s;
-      }
-      .input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px oklch(0.68 0.19 35 / 0.18);
-      }
-      .input::placeholder { color: var(--muted-foreground); }
-    `}</style>
   );
 }

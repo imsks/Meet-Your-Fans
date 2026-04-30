@@ -1,29 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { SiteShell } from "@/components/site/SiteShell";
 import { Users, Sparkles, MapPin, Calendar, ArrowRight, Heart } from "lucide-react";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "MeetYourFans — Where creators meet their audience IRL" },
-      {
-        name: "description",
-        content:
-          "MeetYourFans helps creators organise real-life meetups with their audience. Build community beyond the screen.",
-      },
-      { property: "og:title", content: "MeetYourFans — Where creators meet their audience IRL" },
-      {
-        property: "og:description",
-        content:
-          "Help your favourite creators come to your city. Help creators meet the people who actually care.",
-      },
-    ],
-  }),
-  component: Index,
-});
-
-function Index() {
+export default function HomePage() {
   return (
     <SiteShell>
       {/* Hero */}
@@ -58,21 +37,24 @@ function Index() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              to="/creators/register"
+              href="/creators/register"
               className="inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
               style={{ background: "var(--gradient-hero)", boxShadow: "var(--shadow-soft)" }}
             >
-              I'm a Creator <ArrowRight className="h-4 w-4" />
+              I&apos;m a Creator <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/register"
+              href="/register"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
             >
-              I'm a Fan
+              I&apos;m a Fan
             </Link>
           </div>
           <div className="mt-6">
-            <Link to="/creators" className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+            <Link
+              href="/creators"
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
               Browse creators →
             </Link>
           </div>
@@ -86,7 +68,7 @@ function Index() {
             Why creators join MeetYourFans
           </h2>
           <p className="mt-3 text-muted-foreground">
-            The platform you don't own owns your audience. We don't.
+            The platform you don&apos;t own owns your audience. We don&apos;t.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -135,9 +117,21 @@ function Index() {
           </div>
           <ol className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { n: "01", title: "Creators register", body: "Add your name, email and your social handle. Get a public page." },
-              { n: "02", title: "Fans join the map", body: "Your audience signs up with their city — they appear as a pin on your map." },
-              { n: "03", title: "Meet in real life", body: "See where demand is highest. Plan meetups. Show up. (Coming soon.)" },
+              {
+                n: "01",
+                title: "Creators register",
+                body: "Add your name, email and your social handle. Get a public page.",
+              },
+              {
+                n: "02",
+                title: "Fans join the map",
+                body: "Your audience signs up with their city — they appear as a pin on your map.",
+              },
+              {
+                n: "03",
+                title: "Meet in real life",
+                body: "See where demand is highest. Plan meetups. Show up. (Coming soon.)",
+              },
             ].map((s) => (
               <li key={s.n} className="rounded-2xl border border-border bg-card p-6">
                 <div className="text-sm font-mono text-primary">{s.n}</div>
@@ -151,12 +145,15 @@ function Index() {
 
       {/* Coming soon */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="rounded-3xl border border-border p-8 sm:p-12" style={{ background: "var(--gradient-warm)" }}>
+        <div
+          className="rounded-3xl border border-border p-8 sm:p-12"
+          style={{ background: "var(--gradient-warm)" }}
+        >
           <div className="flex items-center gap-2 text-sm font-medium text-primary">
             <Calendar className="h-4 w-4" /> Coming soon
           </div>
           <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-            Create & request meetups
+            Create &amp; request meetups
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             Creators will be able to publish meetups in any city. Fans will be able to
@@ -164,7 +161,7 @@ function Index() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              to="/register"
+              href="/register"
               className="inline-flex items-center gap-2 rounded-lg bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:-translate-y-0.5"
             >
               Get on the map <Heart className="h-4 w-4" fill="currentColor" />

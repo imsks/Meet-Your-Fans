@@ -1,24 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+"use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { SiteShell } from "@/components/site/SiteShell";
 import { supabase } from "@/integrations/supabase/client";
-import { FieldStyles } from "./register";
 import { Loader2 } from "lucide-react";
-
-export const Route = createFileRoute("/creators/register")({
-  head: () => ({
-    meta: [
-      { title: "Become a Creator — MeetYourFans" },
-      { name: "description", content: "Register as a creator and start mapping your audience for real-life meetups." },
-      { property: "og:title", content: "Become a Creator — MeetYourFans" },
-      { property: "og:description", content: "Build community beyond the platform. Map your fans. Meet them IRL." },
-    ],
-  }),
-  component: CreatorRegisterPage,
-});
 
 const SOCIALS = [
   { value: "instagram", label: "Instagram" },
@@ -45,8 +33,8 @@ function slugify(s: string) {
     .slice(0, 60);
 }
 
-function CreatorRegisterPage() {
-  const navigate = useNavigate();
+export function CreatorRegisterForm() {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -66,9 +54,11 @@ function CreatorRegisterPage() {
 
     const baseSlug = slugify(parsed.data.name) || "creator";
     let slug = baseSlug;
-    // Try a few suffixes to avoid collisions
     for (let i = 0; i < 5; i++) {
-      const trySlug = i === 0 ? baseSlug : `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
+      const trySlug =
+        i === 0
+          ? baseSlug
+          : `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
       const { error } = await supabase.from("creators").insert({
         name: parsed.data.name,
         email: parsed.data.email,
@@ -80,13 +70,17 @@ function CreatorRegisterPage() {
         slug = trySlug;
         setSubmitting(false);
         toast.success("Welcome aboard! 🎉");
-        setTimeout(() => navigate({ to: "/creators/$slug", params: { slug } }), 700);
+        setTimeout(() => router.push(`/creators/${slug}`), 700);
         return;
       }
       // 23505 = unique violation
       if (error.code !== "23505") {
         setSubmitting(false);
-        toast.error(error.message.includes("email") ? "That email is already registered." : "Something went wrong.");
+        toast.error(
+          error.message.includes("email")
+            ? "That email is already registered."
+            : "Something went wrong.",
+        );
         return;
       }
     }
@@ -96,7 +90,6 @@ function CreatorRegisterPage() {
 
   return (
     <SiteShell>
-      <Toaster />
       <section className="mx-auto max-w-xl px-4 py-16 sm:px-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -139,11 +132,18 @@ function CreatorRegisterPage() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-[160px_1fr]">
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">Platform</span>
+              <span className="mb-1.5 block text-sm font-medium text-foreground">
+                Platform
+              </span>
               <select
                 className="input"
                 value={form.social_type}
-                onChange={(e) => setForm({ ...form, social_type: e.target.value as typeof form.social_type })}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    social_type: e.target.value as typeof form.social_type,
+                  })
+                }
               >
                 {SOCIALS.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -153,12 +153,16 @@ function CreatorRegisterPage() {
               </select>
             </label>
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">Handle / Username</span>
+              <span className="mb-1.5 block text-sm font-medium text-foreground">
+                Handle / Username
+              </span>
               <input
                 required
                 className="input"
                 value={form.social_handle}
-                onChange={(e) => setForm({ ...form, social_handle: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, social_handle: e.target.value })
+                }
                 placeholder="yourhandle"
                 maxLength={80}
               />
@@ -169,18 +173,20 @@ function CreatorRegisterPage() {
             type="submit"
             disabled={submitting}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
-            style={{ background: "var(--gradient-hero)", boxShadow: "var(--shadow-soft)" }}
+            style={{
+              background: "var(--gradient-hero)",
+              boxShadow: "var(--shadow-soft)",
+            }}
           >
             {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
             Create my creator page
           </button>
 
           <p className="text-center text-xs text-muted-foreground">
-            Your email stays private. Only your name & handle appear publicly.
+            Your email stays private. Only your name &amp; handle appear publicly.
           </p>
         </form>
       </section>
-      <FieldStyles />
     </SiteShell>
   );
 }
