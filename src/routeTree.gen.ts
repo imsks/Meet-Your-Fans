@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CreatorsIndexRouteImport } from './routes/creators.index'
 import { Route as CreatorsRegisterRouteImport } from './routes/creators.register'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorsIndexRoute = CreatorsIndexRouteImport.update({
+  id: '/creators/',
+  path: '/creators/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorsRegisterRoute = CreatorsRegisterRouteImport.update({
   id: '/creators/register',
   path: '/creators/register',
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
   '/creators/register': typeof CreatorsRegisterRoute
+  '/creators/': typeof CreatorsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
   '/creators/register': typeof CreatorsRegisterRoute
+  '/creators': typeof CreatorsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
   '/creators/register': typeof CreatorsRegisterRoute
+  '/creators/': typeof CreatorsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register' | '/creators/register'
+  fullPaths: '/' | '/register' | '/creators/register' | '/creators/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register' | '/creators/register'
-  id: '__root__' | '/' | '/register' | '/creators/register'
+  to: '/' | '/register' | '/creators/register' | '/creators'
+  id: '__root__' | '/' | '/register' | '/creators/register' | '/creators/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RegisterRoute: typeof RegisterRoute
   CreatorsRegisterRoute: typeof CreatorsRegisterRoute
+  CreatorsIndexRoute: typeof CreatorsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creators/': {
+      id: '/creators/'
+      path: '/creators'
+      fullPath: '/creators/'
+      preLoaderRoute: typeof CreatorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creators/register': {
       id: '/creators/register'
       path: '/creators/register'
@@ -89,7 +106,17 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RegisterRoute: RegisterRoute,
   CreatorsRegisterRoute: CreatorsRegisterRoute,
+  CreatorsIndexRoute: CreatorsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
