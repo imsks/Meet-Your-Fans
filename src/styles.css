@@ -63,25 +63,33 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  /* MeetYourFans — warm, community-focused palette */
+  --background: oklch(0.99 0.008 70);
+  --foreground: oklch(0.18 0.03 30);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.18 0.03 30);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.18 0.03 30);
+  --primary: oklch(0.68 0.19 35);
+  --primary-foreground: oklch(0.99 0.01 70);
+  --primary-glow: oklch(0.78 0.17 50);
+  --secondary: oklch(0.96 0.02 60);
+  --secondary-foreground: oklch(0.25 0.04 35);
+  --muted: oklch(0.96 0.012 60);
+  --muted-foreground: oklch(0.5 0.03 40);
+  --accent: oklch(0.93 0.06 80);
+  --accent-foreground: oklch(0.25 0.05 35);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.92 0.015 60);
+  --input: oklch(0.92 0.015 60);
+  --ring: oklch(0.68 0.19 35);
+
+  --gradient-hero: linear-gradient(135deg, oklch(0.68 0.19 35) 0%, oklch(0.78 0.17 50) 50%, oklch(0.85 0.13 75) 100%);
+  --gradient-warm: linear-gradient(180deg, oklch(0.99 0.008 70) 0%, oklch(0.97 0.025 60) 100%);
+  --shadow-soft: 0 10px 30px -12px oklch(0.68 0.19 35 / 0.25);
+  --shadow-glow: 0 0 60px -10px oklch(0.78 0.17 50 / 0.5);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
