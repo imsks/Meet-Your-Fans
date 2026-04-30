@@ -96,7 +96,42 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_audience_pins: {
+        Args: { _creator_id?: string }
+        Returns: {
+          city: string
+          country: string
+          created_at: string
+          creator_id: string
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+        }[]
+      }
+      get_creator_by_slug: {
+        Args: { _slug: string }
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          social_handle: string
+          social_type: string
+        }[]
+      }
+      get_creators_public: {
+        Args: never
+        Returns: {
+          audience_count: number
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          social_handle: string
+          social_type: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
