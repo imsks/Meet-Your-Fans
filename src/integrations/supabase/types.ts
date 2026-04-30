@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audience_members: {
+        Row: {
+          city: string
+          contact_number: string | null
+          country: string | null
+          created_at: string
+          creator_id: string | null
+          email: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+        }
+        Insert: {
+          city: string
+          contact_number?: string | null
+          country?: string | null
+          created_at?: string
+          creator_id?: string | null
+          email: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+        }
+        Update: {
+          city?: string
+          contact_number?: string | null
+          country?: string | null
+          created_at?: string
+          creator_id?: string | null
+          email?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audience_members_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "creators"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      creators: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          slug: string
+          social_handle: string
+          social_type: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          slug: string
+          social_handle: string
+          social_type: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          slug?: string
+          social_handle?: string
+          social_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
