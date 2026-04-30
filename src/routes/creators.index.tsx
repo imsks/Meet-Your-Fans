@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { supabase } from "@/integrations/supabase/client";
-import { socialLabel, socialUrl } from "@/lib/social";
+import { socialLabel } from "@/lib/social";
 import { ArrowRight, Users, ExternalLink } from "lucide-react";
 
 export const Route = createFileRoute("/creators/")({
@@ -115,6 +115,3 @@ function CreatorsList() {
     </SiteShell>
   );
 }
-
-// Silence unused-import warnings in case socialUrl unused here
-void socialUrl;
