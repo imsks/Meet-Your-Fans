@@ -13,6 +13,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreatorsIndexRouteImport } from './routes/creators.index'
 import { Route as CreatorsRegisterRouteImport } from './routes/creators.register'
+import { Route as CreatorsSlugRouteImport } from './routes/creators.$slug'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -34,16 +35,23 @@ const CreatorsRegisterRoute = CreatorsRegisterRouteImport.update({
   path: '/creators/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorsSlugRoute = CreatorsSlugRouteImport.update({
+  id: '/creators/$slug',
+  path: '/creators/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/creators/$slug': typeof CreatorsSlugRoute
   '/creators/register': typeof CreatorsRegisterRoute
   '/creators/': typeof CreatorsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/creators/$slug': typeof CreatorsSlugRoute
   '/creators/register': typeof CreatorsRegisterRoute
   '/creators': typeof CreatorsIndexRoute
 }
@@ -51,20 +59,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/creators/$slug': typeof CreatorsSlugRoute
   '/creators/register': typeof CreatorsRegisterRoute
   '/creators/': typeof CreatorsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register' | '/creators/register' | '/creators/'
+  fullPaths:
+    | '/'
+    | '/register'
+    | '/creators/$slug'
+    | '/creators/register'
+    | '/creators/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register' | '/creators/register' | '/creators'
-  id: '__root__' | '/' | '/register' | '/creators/register' | '/creators/'
+  to: '/' | '/register' | '/creators/$slug' | '/creators/register' | '/creators'
+  id:
+    | '__root__'
+    | '/'
+    | '/register'
+    | '/creators/$slug'
+    | '/creators/register'
+    | '/creators/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RegisterRoute: typeof RegisterRoute
+  CreatorsSlugRoute: typeof CreatorsSlugRoute
   CreatorsRegisterRoute: typeof CreatorsRegisterRoute
   CreatorsIndexRoute: typeof CreatorsIndexRoute
 }
@@ -99,12 +120,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorsRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creators/$slug': {
+      id: '/creators/$slug'
+      path: '/creators/$slug'
+      fullPath: '/creators/$slug'
+      preLoaderRoute: typeof CreatorsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RegisterRoute: RegisterRoute,
+  CreatorsSlugRoute: CreatorsSlugRoute,
   CreatorsRegisterRoute: CreatorsRegisterRoute,
   CreatorsIndexRoute: CreatorsIndexRoute,
 }
