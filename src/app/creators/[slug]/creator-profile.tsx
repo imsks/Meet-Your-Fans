@@ -116,7 +116,7 @@ export function CreatorProfile({ slug }: { slug: string }) {
               </div>
             </div>
             <Link
-              href="/register"
+              href={`/creators/${slug}/join`}
               className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-primary-foreground"
               style={{
                 background: "var(--gradient-hero)",
@@ -132,7 +132,7 @@ export function CreatorProfile({ slug }: { slug: string }) {
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4 text-primary" />
-          Fan map — every dot is a real person waiting for a meetup
+          Fan map - Located {pins.length} {pins.length === 1 ? "fan" : "fans"} around the world
         </div>
         <AudienceMap pins={pins} />
 
@@ -140,7 +140,7 @@ export function CreatorProfile({ slug }: { slug: string }) {
           <div className="mt-6 rounded-2xl border border-dashed border-border bg-card p-8 text-center">
             <p className="text-muted-foreground">No fans on the map yet.</p>
             <Link
-              href="/register"
+              href={`/creators/${slug}/join`}
               className="mt-3 inline-block text-sm font-semibold text-primary hover:underline"
             >
               Be the first →
